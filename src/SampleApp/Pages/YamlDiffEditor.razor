@@ -1,0 +1,229 @@
+﻿@page "/yamldiffeditor"
+<div class="editorContent">
+    <MonacoDiffEditorYaml @ref="_yamlDiffEditor"
+                          Id="monacoDiffEditorYaml"
+                          OriginalValue="@ValueOriginal"
+                          ModifiedValue="@ValueModified"
+                          CssClass="editor" />
+</div>
+@code {
+    private MonacoDiffEditorYaml _yamlDiffEditor { get; set; }
+
+    private string ValueOriginal = @"# Zorgtoeslag for burger site demo
+stuurinformatie:
+  onderwerp: zorgtoeslag
+  organisatie: belastingdienst
+  type: toeslagen
+  domein: zorg
+  versie: 5.0
+  status: ontwikkel
+  jaar: 2019
+  bron: https://download.belastingdienst.nl/toeslagen/docs/berekening_zorgtoeslag_2019_tg0821z91fd.pdf
+berekening:
+ - stap: woonland
+   formule: woonlandfactor
+   recht: woonlandfactor > 0
+ - stap: woonsituatie
+   keuze:
+   - situatie: alleenstaande
+   - situatie: aanvrager_met_toeslagpartner
+ - stap: vermogensdrempel
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   keuze:
+   - situatie: hoger_dan_vermogensdrempel
+   - situatie: lager_dan_vermogensdrempel
+   recht: lager_dan_vermogensdrempel
+ - stap: inkomensdrempel
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   keuze:
+   - situatie: hoger_dan_inkomensdrempel
+   - situatie: lager_dan_inkomensdrempel
+   recht: lager_dan_inkomensdrempel
+ - stap: toetsingsinkomen
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   waarde: toetsingsinkomen
+   recht: toetsingsinkomen<toetsingsinkomensdrempel
+ - stap: zorgtoeslag
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   formule: zorgtoeslag
+formules:
+ - woonlandfactor:
+     formule: lookup('woonlandfactoren',woonland,'woonland','factor', 0)
+ - standaardpremie:
+   - situatie: alleenstaande
+     formule: 1609
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 3218
+ - toetsingsinkomensdrempel:
+   - situatie: alleenstaande
+     formule: 29562
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 37885
+ - toetsingsvermogensdrempel:
+   - situatie: alleenstaande
+     formule: 114776
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 145136
+ - drempelinkomen:
+     formule: 20941
+ - normpremie:
+   - situatie: alleenstaande
+     formule: min(percentage(2.005) * drempelinkomen + max(percentage(13.520) * (toetsingsinkomen - drempelinkomen),0), 1189)
+   - situatie: aanvrager_met_toeslagpartner
+     formule: min(percentage(4.315) * drempelinkomen + max(percentage(13.520) * (toetsingsinkomen - drempelinkomen),0), 2314)
+ - zorgtoeslag:
+     formule: round((standaardpremie - normpremie) * woonlandfactor / 12,2)
+tabellen:
+  - naam: woonlandfactoren
+    woonland, factor:
+      - [Nederland,           1.0    ]
+      - [België,              0.7392 ]
+      - [Bosnië-Herzegovina,  0.0672 ]
+      - [Bulgarije,           0.0735 ]
+      - [Cyprus,              0.1363 ]
+      - [Denemarken,          0.9951 ]
+      - [Duitsland,           0.8701 ]
+      - [Estland,             0.2262 ]
+      - [Finland,             0.7161 ]
+      - [Frankrijk,           0.8316 ]
+      - [Griekenland,         0.2490 ]
+      - [Hongarije,           0.1381 ]
+      - [Ierland,             0.8667 ]
+      - [IJsland,             0.9802 ]
+      - [Italië,              0.5470 ]
+      - [Kaapverdië,          0.0177 ]
+      - [Kroatië,             0.1674 ]
+      - [Letland,             0.0672 ]
+      - [Liechtenstein,       0.9720 ]
+      - [Litouwen,            0.2399 ]
+      - [Luxemburg,           0.7358 ]
+      - [Macedonië,           0.0565 ]
+      - [Malta,               0.3574 ]
+      - [Marokko,             0.0193 ]
+      - [Montenegro,          0.0821 ]
+      - [Noorwegen,           1.3729 ]
+      - [Oostenrijk,          0.6632 ]
+      - [Polen,               0.1691 ]
+      - [Portugal,            0.2616 ]
+      - [Roemenië,            0.0814 ]
+      - [Servië,              0.0714 ]
+      - [Slovenië,            0.3377 ]
+      - [Slowakije,           0.2405 ]
+      - [Spanje,              0.4001 ]
+      - [Tsjechië,            0.2412 ]
+      - [Tunesië,             0.0292 ]
+      - [Turkije,             0.0874 ]
+      - [Verenigd Koninkrijk, 0.7741 ]
+      - [Zweden,              0.8213 ]
+      - [Zwitserland,         0.8000 ]
+      - [Anders,              0      ]";
+
+    private string ValueModified = @"# Zorgtoeslag for burger site demo
+stuurinformatie:
+  onderwerp: zorgtoeslag
+  organisatie: belastingdienst
+  type: toeslagen
+  domein: zorg
+  versie: 1.0
+  status: ontwikkel
+  jaar: 2020
+  bron: https://download.belastingdienst.nl/toeslagen/docs/berekening_zorgtoeslag_tg0821z01fd.pdf
+berekening:
+ - stap: woonland
+   formule: woonlandfactor
+   recht: woonlandfactor > 0
+ - stap: woonsituatie
+   keuze:
+   - situatie: alleenstaande
+   - situatie: aanvrager_met_toeslagpartner
+ - stap: vermogensdrempel
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   keuze:
+   - situatie: hoger_dan_vermogensdrempel
+   - situatie: lager_dan_vermogensdrempel
+   recht: lager_dan_vermogensdrempel
+ - stap: inkomensdrempel
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   keuze:
+   - situatie: hoger_dan_inkomensdrempel
+   - situatie: lager_dan_inkomensdrempel
+   recht: lager_dan_inkomensdrempel
+ - stap: toetsingsinkomen
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   waarde: toetsingsinkomen
+   recht: toetsingsinkomen < toetsingsinkomensdrempel
+ - stap: zorgtoeslag
+   situatie: alleenstaande, aanvrager_met_toeslagpartner
+   formule: zorgtoeslag
+formules:
+ - woonlandfactor:
+     formule: lookup('woonlandfactoren',woonland,'woonland','factor', 0)
+ - standaardpremie:
+   - situatie: alleenstaande
+     formule: 1642
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 3284
+ - toetsingsinkomensdrempel:
+   - situatie: alleenstaande
+     formule: 30481
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 38945
+ - toetsingsvermogensdrempel:
+   - situatie: alleenstaande
+     formule: 116613
+   - situatie: aanvrager_met_toeslagpartner
+     formule: 147459
+ - drempelinkomen:
+     formule: 21431
+ - normpremie:
+   - situatie: alleenstaande
+     formule: min(percentage(1.830) * drempelinkomen + max(percentage(13.550) * (toetsingsinkomen - drempelinkomen),0), 1250)
+   - situatie: aanvrager_met_toeslagpartner
+     formule: min(percentage(4140) * drempelinkomen + max(percentage(13.550) * (toetsingsinkomen - drempelinkomen),0), 2397)
+ - zorgtoeslag:
+     formule: round((standaardpremie - normpremie) * woonlandfactor / 12,2)
+tabellen:
+  - naam: woonlandfactoren
+    woonland, factor:
+      - [ Nederland,                1.0    ]
+      - [ België,                   0.7303 ]
+      - [ Bondsrepubliek Duitsland, 0.8041 ]
+      - [ Bosnië-Herzegovina,       0.0695 ]
+      - [ Bulgarije,                0.0780 ]
+      - [ Cyprus,                   0.1410 ]
+      - [ Denemarken,               1.0095 ]
+      - [ Estland,                  0.2408 ]
+      - [ Finland,                  0.7340 ]
+      - [ Frankrijk,                0.9066 ]
+      - [ Griekenland,              0.2589 ]
+      - [ Grootbrittannië,          0.7004 ]
+      - [ Hongarije,                0.1445 ]
+      - [ Ierland,                  0.8972 ]
+      - [ IJsland,                  1.1637 ]
+      - [ Italië,                   0.5504 ]
+      - [ Kaap-Verdië,              0.0176 ]
+      - [ Kroatië,                  0.1836 ]
+      - [ Letland,                  0.1020 ]
+      - [ Liechtenstein,            1.0584 ]
+      - [ Litouwen,                 0.2553 ]
+      - [ Luxemburg,                0.7107 ]
+      - [ Macedonië,                0.0598 ]
+      - [ Malta,                    0.3783 ]
+      - [ Marokko,                  0.0229 ]
+      - [ Montenegro,               0.0821 ]
+      - [ Noorwegen,                1.3678 ]
+      - [ Oostenrijk,               0.6730 ]
+      - [ Polen,                    0.1709 ]
+      - [ Portugal,                 0.2736 ]
+      - [ Roemenië,                 0.0877 ]
+      - [ Servië,                   0.0718 ]
+      - [ Slovenië,                 0.3520 ]
+      - [ Slowakije,                0.2584 ]
+      - [ Spanje,                   0.4065 ]
+      - [ Tsjechië,                 0.2464 ]
+      - [ Tunesië,                  0.0289 ]
+      - [ Turkije,                  0.0902 ]
+      - [ Zweden,                   0.8339 ]
+      - [ Zwitserland,              0.7933 ]
+      - [ Anders,                   0      ]";
+}
