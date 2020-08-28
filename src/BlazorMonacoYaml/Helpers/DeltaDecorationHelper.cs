@@ -62,7 +62,12 @@ namespace BlazorMonacoYaml.Helpers
                 ClassName = "editorError",
                 HoverMessage = new MarkdownString[] { new MarkdownString { Value = $"**Error**\r\n\r\n{message}" } },
                 GlyphMarginClassName = "editorErrorGlyph fa fa-exclamation-circle",
-                GlyphMarginHoverMessage = new MarkdownString[] { new MarkdownString { Value = $"**Error**\r\n\r\n{message}" } }
+                GlyphMarginHoverMessage = new MarkdownString[] { new MarkdownString { Value = $"**Error**\r\n\r\n{message}" } },
+                Minimap = new ModelDecorationMinimapOptions
+                {
+                    Color = "#ff0000",
+                    Position = MinimapPosition.Inline
+                }
             };
 
             return new ModelDeltaDecoration { Range = range, Options = options };
