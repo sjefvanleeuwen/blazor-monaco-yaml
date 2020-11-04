@@ -1,0 +1,7 @@
+*.cs linguist-language=C#
+*.razor linguist-language=C#
+docs/* linguist-vendored
+src/BlazorMonacoYaml/wwwroot/lib/* linguist-vendored
+src/SampleApp.Server/* linguist-vendored
+src/SampleApp.WASM/* linguist-vendored
+src/SampleApp/* linguist-vendored
