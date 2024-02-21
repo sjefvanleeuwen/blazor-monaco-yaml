@@ -1,5 +1,5 @@
 ﻿using BlazorMonaco;
-using BlazorMonaco.Bridge;
+using BlazorMonaco.Editor;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ namespace BlazorMonacoYaml.Helpers
 {
     public static class DeltaDecorationHelper
     {
-        public static async Task<string[]> SetDeltaDecorations(MonacoEditor monacoEditor, string[] deltaDecorationIds, BlazorMonaco.Bridge.Range range, ModelDecorationOptions options)
+        public static async Task<string[]> SetDeltaDecorations(StandaloneCodeEditor monacoEditor, string[] deltaDecorationIds, BlazorMonaco.Range range, ModelDecorationOptions options)
         {
             if (monacoEditor == null)
             {
@@ -18,7 +18,7 @@ namespace BlazorMonacoYaml.Helpers
             return await monacoEditor.DeltaDecorations(deltaDecorationIds ?? new string[] { }, new ModelDeltaDecoration[] { new ModelDeltaDecoration { Range = range, Options = options } });
         }
         
-        public static async Task<string[]> SetDeltaDecorations(MonacoEditor monacoEditor, string[] deltaDecorationIds, ModelDeltaDecoration[] deltaDecorations)
+        public static async Task<string[]> SetDeltaDecorations(StandaloneCodeEditor monacoEditor, string[] deltaDecorationIds, ModelDeltaDecoration[] deltaDecorations)
         {
             if (monacoEditor == null)
             {
@@ -28,7 +28,7 @@ namespace BlazorMonacoYaml.Helpers
             return await monacoEditor.DeltaDecorations(deltaDecorationIds ?? new string[] { }, deltaDecorations);
         }
 
-        public static async Task<string[]> ResetDeltaDecorations(MonacoEditor monacoEditor)
+        public static async Task<string[]> ResetDeltaDecorations(StandaloneCodeEditor monacoEditor)
         {
             if (monacoEditor == null)
             {
@@ -38,7 +38,7 @@ namespace BlazorMonacoYaml.Helpers
             return null;
         }
 
-        public static async Task<ModelDeltaDecoration> BuildDeltaDecoration(MonacoEditor monacoEditor, BlazorMonaco.Bridge.Range range, string message)
+        public static async Task<ModelDeltaDecoration> BuildDeltaDecoration(StandaloneCodeEditor monacoEditor, BlazorMonaco.Range range, string message)
         {
             var isWholeLine = false;
 
@@ -49,7 +49,7 @@ namespace BlazorMonacoYaml.Helpers
             {
                 range.EndColumn = range.StartColumn;
                 var content = await monacoEditor.GetValue();
-                var contentLines = content.Split("\n");
+                var contentLines = content.Split('\n');
                 range.EndColumn = (contentLines.ElementAt(Math.Min(contentLines.Length - 1, range.EndLineNumber - 1))?.Trim().Length ?? 0) + 1;
                 isWholeLine = true;
             }

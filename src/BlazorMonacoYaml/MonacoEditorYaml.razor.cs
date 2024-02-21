@@ -1,5 +1,5 @@
 ﻿using BlazorMonaco;
-using BlazorMonaco.Bridge;
+using BlazorMonaco.Editor;
 using BlazorMonacoYaml.Helpers;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -25,11 +25,11 @@ namespace BlazorMonacoYaml
         public EventCallback OnDidInit { get; set; }
 
         private string[] DeltaDecorations { get; set; }
-        public MonacoEditor MonacoEditor { get; set; }
+        public StandaloneCodeEditor MonacoEditor { get; set; }
 
         private const string _language = "yaml";
 
-        private StandaloneEditorConstructionOptions EditorConstructionOptions(MonacoEditor editor)
+        private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
         {
             return new StandaloneEditorConstructionOptions
             {
@@ -57,7 +57,7 @@ namespace BlazorMonacoYaml
             await OnDidInit.InvokeAsync(null);
         }
 
-        public async Task<ModelDeltaDecoration> BuildDeltaDecoration(BlazorMonaco.Bridge.Range range, string message)
+        public async Task<ModelDeltaDecoration> BuildDeltaDecoration(BlazorMonaco.Range range, string message)
         {
             return await DeltaDecorationHelper.BuildDeltaDecoration(MonacoEditor, range, message);
         }

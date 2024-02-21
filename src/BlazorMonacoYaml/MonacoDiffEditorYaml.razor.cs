@@ -1,12 +1,15 @@
 ﻿using BlazorMonaco;
-using BlazorMonaco.Bridge;
+using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace BlazorMonacoYaml
 {
     public partial class MonacoDiffEditorYaml
     {
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
         [Parameter]
         public string Id { get; set; }
         [Parameter]
@@ -20,13 +23,13 @@ namespace BlazorMonacoYaml
         [Parameter]
         public EventCallback OnDidInit { get; set; }
 
-        private MonacoDiffEditor _monacoDiffEditor { get; set; }
+        private StandaloneDiffEditor _monacoDiffEditor { get; set; }
 
         private const string _language = "yaml";
 
-        private DiffEditorConstructionOptions DiffEditorConstructionOptions(MonacoDiffEditor editor)
+        private StandaloneDiffEditorConstructionOptions DiffEditorConstructionOptions(StandaloneDiffEditor editor)
         {
-            return new DiffEditorConstructionOptions
+            return new StandaloneDiffEditorConstructionOptions
             {
                 AutomaticLayout = true,
                 GlyphMargin = true
@@ -39,12 +42,10 @@ namespace BlazorMonacoYaml
             var modifiedId = $"{Id}-modifiedModel";
 
             var originalModel =
-                await MonacoEditorBase.GetModel(originalId) ??
-                await MonacoEditorBase.CreateModel(OriginalValue, _language, originalId);
+                await Global.CreateModel(JSRuntime, OriginalValue, _language, originalId);
 
             var modifiedModel =
-                await MonacoEditorBase.GetModel(modifiedId) ??
-                await MonacoEditorBase.CreateModel(ModifiedValue, _language, modifiedId);
+                await Global.CreateModel(JSRuntime, ModifiedValue, _language, modifiedId);
 
             //initialte the 2 yaml files
             await _monacoDiffEditor.SetModel(new DiffEditorModel

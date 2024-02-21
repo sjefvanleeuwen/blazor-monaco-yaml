@@ -14,8 +14,6 @@
     <base href="~/" />
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
     <link href="css/site.css" rel="stylesheet" />
-    <!--BlazorMonaco-->
-    <link href="_content/BlazorMonacoYaml/lib/monaco-editor-yaml/min/vs/editor/editor.main.css" rel="stylesheet" />
     <!--Custom part-->
     <link href="_content/SampleApp/editor.css" rel="stylesheet" />
     <link href="_content/SampleApp/site.css" rel="stylesheet" />
@@ -37,12 +35,9 @@
         <a class="dismiss">🗙</a>
     </div>
     <!--BlazorMonaco-->
-    <!--BlazorMonaco Yaml-->
-    <script src="_content/BlazorMonacoYaml/lib/monaco-editor-yaml/min/vs/loader.js"></script>
-    <script>require.config({ paths: { 'vs': '_content/BlazorMonacoYaml/lib/monaco-editor-yaml/min/vs' } });</script>
-    <script src="_content/BlazorMonacoYaml/lib/monaco-editor-yaml/min/vs/editor/editor.main.js"></script>
-    <!--/BlazorMonaco Yaml-->
     <script src="_content/BlazorMonaco/jsInterop.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+    <script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
     <!--/BlazorMonaco-->
     <script src="_framework/blazor.server.js"></script>
 </body>
